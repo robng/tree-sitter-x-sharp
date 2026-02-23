@@ -1,0 +1,66 @@
+{
+  "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
+  "name": "xsharp",
+  "rules": {
+    "source_file": {
+      "type": "REPEAT",
+      "content": {
+        "type": "SYMBOL",
+        "name": "namespace"
+      }
+    },
+    "namespace": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "kw_begin"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kw_namespace"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kw_end"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kw_namespace"
+        }
+      ]
+    },
+    "identifier": {
+      "type": "PATTERN",
+      "value": ".*"
+    },
+    "kw_begin": {
+      "type": "PATTERN",
+      "value": "(?i)begin"
+    },
+    "kw_end": {
+      "type": "PATTERN",
+      "value": "(?i)end"
+    },
+    "kw_namespace": {
+      "type": "PATTERN",
+      "value": "(?i)namespace"
+    }
+  },
+  "extras": [
+    {
+      "type": "PATTERN",
+      "value": "\\s"
+    }
+  ],
+  "conflicts": [],
+  "precedences": [],
+  "externals": [],
+  "inline": [],
+  "supertypes": [],
+  "reserved": {}
+}
