@@ -19,28 +19,120 @@ function ci(s) {
 export default grammar({
   name: "xsharp",
 
-  rules: {
-    source_file: $ =>
-      repeat($.namespace),
+  word: $ => $.identifier,
+  extras: _ => [/\s/],
 
-    namespace: $ => seq(
+  supertypes: $ => [
+    $.decl_of_type,
+    $.visibility,
+  ],
+
+  rules: {
+    source_file: $ => repeat(
+      $.decl_of_namespace
+    ),
+
+    decl_of_namespace: $ => seq(
       $.kw_begin,
       $.kw_namespace,
       $.identifier,
-      // TODO: optional($.namespace_body),
+      repeat($.decl_of_type),
       $.kw_end,
       $.kw_namespace,
     ),
 
+    decl_of_type: $ => choice(
+      $.decl_of_enum,
+      $.decl_of_struct,
+      $.decl_of_interface,
+      $.decl_of_class,
+    ),
+
+    decl_of_enum: $ => seq(
+      optional($.visibility),
+      $.kw_enum,
+      $.identifier,
+      repeat($.identifier),
+      $.kw_end,
+      $.kw_enum,
+    ),
+    decl_of_struct: $ => seq(
+      optional($.visibility),
+      $.kw_struct,
+      $.identifier,
+      repeat($.identifier),
+      $.kw_end,
+      $.kw_struct,
+    ),
+    decl_of_class: $ => seq(
+      optional($.visibility),
+      $.kw_class,
+      $.identifier,
+      repeat($.identifier),
+      $.kw_end,
+      $.kw_class,
+    ),
+    decl_of_interface: $ => seq(
+      optional($.visibility),
+      $.kw_interface,
+      $.identifier,
+      repeat($.identifier),
+      $.kw_end,
+      $.kw_interface,
+    ),
+
+    visibility: $ => choice(
+      $.kw_public,
+      $.kw_protected,
+      $.kw_private,
+      $.kw_internal,
+    ),
+
     identifier: _ =>
-      new RustRegex(".*"),
+      new RustRegex("[\\p{L}\\p{N}]+"),
 
+    // ---------------------------------------------------------------------
+    //  Keywords
+    // ---------------------------------------------------------------------
+
+    // Begin & end
     kw_begin: _ =>
-      ci("begin"),
+      token(prec(1, /begin/i)),
     kw_end: _ =>
-      ci("end"),
+      token(prec(1, /end/i)),
 
+    // Namespace- & type declarators
     kw_namespace: _ =>
-      ci("namespace"),
+      token(prec(1, /namespace/i)),
+    kw_enum: _ =>
+      token(prec(1, /enum/i)),
+    kw_struct: _ =>
+      token(prec(1, /struct/i)),
+    kw_interface: _ =>
+      token(prec(1, /interface/i)),
+    kw_class: _ =>
+      token(prec(1, /class/i)),
+
+    // Visibility
+    kw_public: _ =>
+      token(prec(1, /public/i)),
+    kw_protected: _ =>
+      token(prec(1, /protected/i)),
+    kw_private: _ =>
+      token(prec(1, /private/i)),
+    kw_internal: _ =>
+      token(prec(1, /internal/i)),
+
+    // Scope
+    kw_global: _ =>
+      prec(1, /global/i),
+    kw_local: _ =>
+      prec(1, /local/i),
+
+    // Mutability
+    kw_const: _ =>
+      prec(1, /const/i),
+    kw_var: _ =>
+      prec(1, /var/i)
   }
 });

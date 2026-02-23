@@ -1,12 +1,141 @@
 [
   {
-    "type": "namespace",
+    "type": "decl_of_type",
+    "named": true,
+    "subtypes": [
+      {
+        "type": "decl_of_class",
+        "named": true
+      },
+      {
+        "type": "decl_of_enum",
+        "named": true
+      },
+      {
+        "type": "decl_of_interface",
+        "named": true
+      },
+      {
+        "type": "decl_of_struct",
+        "named": true
+      }
+    ]
+  },
+  {
+    "type": "visibility",
+    "named": true,
+    "subtypes": [
+      {
+        "type": "kw_internal",
+        "named": true
+      },
+      {
+        "type": "kw_private",
+        "named": true
+      },
+      {
+        "type": "kw_protected",
+        "named": true
+      },
+      {
+        "type": "kw_public",
+        "named": true
+      }
+    ]
+  },
+  {
+    "type": "decl_of_class",
     "named": true,
     "fields": {},
     "children": {
       "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "kw_class",
+          "named": true
+        },
+        {
+          "type": "kw_end",
+          "named": true
+        },
+        {
+          "type": "visibility",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "decl_of_enum",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "kw_end",
+          "named": true
+        },
+        {
+          "type": "kw_enum",
+          "named": true
+        },
+        {
+          "type": "visibility",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "decl_of_interface",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "kw_end",
+          "named": true
+        },
+        {
+          "type": "kw_interface",
+          "named": true
+        },
+        {
+          "type": "visibility",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "decl_of_namespace",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "decl_of_type",
+          "named": true
+        },
         {
           "type": "identifier",
           "named": true
@@ -27,6 +156,33 @@
     }
   },
   {
+    "type": "decl_of_struct",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "kw_end",
+          "named": true
+        },
+        {
+          "type": "kw_struct",
+          "named": true
+        },
+        {
+          "type": "visibility",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "source_file",
     "named": true,
     "root": true,
@@ -36,7 +192,7 @@
       "required": false,
       "types": [
         {
-          "type": "namespace",
+          "type": "decl_of_namespace",
           "named": true
         }
       ]
@@ -51,11 +207,43 @@
     "named": true
   },
   {
+    "type": "kw_class",
+    "named": true
+  },
+  {
     "type": "kw_end",
     "named": true
   },
   {
+    "type": "kw_enum",
+    "named": true
+  },
+  {
+    "type": "kw_interface",
+    "named": true
+  },
+  {
+    "type": "kw_internal",
+    "named": true
+  },
+  {
     "type": "kw_namespace",
+    "named": true
+  },
+  {
+    "type": "kw_private",
+    "named": true
+  },
+  {
+    "type": "kw_protected",
+    "named": true
+  },
+  {
+    "type": "kw_public",
+    "named": true
+  },
+  {
+    "type": "kw_struct",
     "named": true
   }
 ]

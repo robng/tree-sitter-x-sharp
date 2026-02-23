@@ -1,15 +1,16 @@
 {
   "$schema": "https://tree-sitter.github.io/tree-sitter/assets/schemas/grammar.schema.json",
   "name": "xsharp",
+  "word": "identifier",
   "rules": {
     "source_file": {
       "type": "REPEAT",
       "content": {
         "type": "SYMBOL",
-        "name": "namespace"
+        "name": "decl_of_namespace"
       }
     },
-    "namespace": {
+    "decl_of_namespace": {
       "type": "SEQ",
       "members": [
         {
@@ -25,6 +26,13 @@
           "name": "identifier"
         },
         {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "decl_of_type"
+          }
+        },
+        {
           "type": "SYMBOL",
           "name": "kw_end"
         },
@@ -34,21 +42,379 @@
         }
       ]
     },
+    "decl_of_type": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "decl_of_enum"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "decl_of_struct"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "decl_of_interface"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "decl_of_class"
+        }
+      ]
+    },
+    "decl_of_enum": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "visibility"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kw_enum"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "identifier"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kw_end"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kw_enum"
+        }
+      ]
+    },
+    "decl_of_struct": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "visibility"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kw_struct"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "identifier"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kw_end"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kw_struct"
+        }
+      ]
+    },
+    "decl_of_class": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "visibility"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kw_class"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "identifier"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kw_end"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kw_class"
+        }
+      ]
+    },
+    "decl_of_interface": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "visibility"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kw_interface"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "identifier"
+        },
+        {
+          "type": "REPEAT",
+          "content": {
+            "type": "SYMBOL",
+            "name": "identifier"
+          }
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kw_end"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kw_interface"
+        }
+      ]
+    },
+    "visibility": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "kw_public"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kw_protected"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kw_private"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "kw_internal"
+        }
+      ]
+    },
     "identifier": {
       "type": "PATTERN",
-      "value": ".*"
+      "value": "[\\p{L}\\p{N}]+"
     },
     "kw_begin": {
-      "type": "PATTERN",
-      "value": "(?i)begin"
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "PATTERN",
+          "value": "begin",
+          "flags": "i"
+        }
+      }
     },
     "kw_end": {
-      "type": "PATTERN",
-      "value": "(?i)end"
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "PATTERN",
+          "value": "end",
+          "flags": "i"
+        }
+      }
     },
     "kw_namespace": {
-      "type": "PATTERN",
-      "value": "(?i)namespace"
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "PATTERN",
+          "value": "namespace",
+          "flags": "i"
+        }
+      }
+    },
+    "kw_enum": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "PATTERN",
+          "value": "enum",
+          "flags": "i"
+        }
+      }
+    },
+    "kw_struct": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "PATTERN",
+          "value": "struct",
+          "flags": "i"
+        }
+      }
+    },
+    "kw_interface": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "PATTERN",
+          "value": "interface",
+          "flags": "i"
+        }
+      }
+    },
+    "kw_class": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "PATTERN",
+          "value": "class",
+          "flags": "i"
+        }
+      }
+    },
+    "kw_public": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "PATTERN",
+          "value": "public",
+          "flags": "i"
+        }
+      }
+    },
+    "kw_protected": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "PATTERN",
+          "value": "protected",
+          "flags": "i"
+        }
+      }
+    },
+    "kw_private": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "PATTERN",
+          "value": "private",
+          "flags": "i"
+        }
+      }
+    },
+    "kw_internal": {
+      "type": "TOKEN",
+      "content": {
+        "type": "PREC",
+        "value": 1,
+        "content": {
+          "type": "PATTERN",
+          "value": "internal",
+          "flags": "i"
+        }
+      }
+    },
+    "kw_global": {
+      "type": "PREC",
+      "value": 1,
+      "content": {
+        "type": "PATTERN",
+        "value": "global",
+        "flags": "i"
+      }
+    },
+    "kw_local": {
+      "type": "PREC",
+      "value": 1,
+      "content": {
+        "type": "PATTERN",
+        "value": "local",
+        "flags": "i"
+      }
+    },
+    "kw_const": {
+      "type": "PREC",
+      "value": 1,
+      "content": {
+        "type": "PATTERN",
+        "value": "const",
+        "flags": "i"
+      }
+    },
+    "kw_var": {
+      "type": "PREC",
+      "value": 1,
+      "content": {
+        "type": "PATTERN",
+        "value": "var",
+        "flags": "i"
+      }
     }
   },
   "extras": [
@@ -61,6 +427,9 @@
   "precedences": [],
   "externals": [],
   "inline": [],
-  "supertypes": [],
+  "supertypes": [
+    "decl_of_type",
+    "visibility"
+  ],
   "reserved": {}
 }

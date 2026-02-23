@@ -1,3 +1,16 @@
 BEGIN NAMESPACE Example
+
+    PUBLIC CLASS ExampleClass
+    END CLASS
+
+    PUBLIC STRUCT ExampleStruct
+    END STRUCT
+
+    PUBLIC ENUM ExampleEnum
+    END ENUM
+
+    PUBLIC INTERFACE IExample
+    END INTERFACE
+
 END NAMESPACE
 
